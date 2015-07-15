@@ -3,7 +3,8 @@
 class LoginHomePlugin extends Omeka_Plugin_AbstractPlugin{
 
 	protected $_hooks = array(
-		'define_acl'
+		'define_acl',
+        'public_header'
     );
 
 	protected $_filters = array(
@@ -35,6 +36,10 @@ class LoginHomePlugin extends Omeka_Plugin_AbstractPlugin{
             'resource' => 'LoginHome_Index'
         );
         return $nav;
+    }
+
+    public function hookPublicHeader($args){
+        echo common('login',array(),'widget');
     }
 
 }
