@@ -8,7 +8,8 @@ class LoginHomePlugin extends Omeka_Plugin_AbstractPlugin{
     );
 
 	protected $_filters = array(
-		'admin_navigation_main'
+		'admin_navigation_main',
+        'public_navigation_main'
 	);
 
         /**
@@ -30,16 +31,36 @@ class LoginHomePlugin extends Omeka_Plugin_AbstractPlugin{
 
     public function filterAdminNavigationMain($nav)
     {
-        $nav[] = array(
-            'label' => __('Login Home'),
-            'uri' => url('login-home'),
-            'resource' => 'LoginHome_Index'
-        );
+        // $nav[] = array(
+        //     'label' => __('Login Home'),
+        //     'uri' => url('login-home'),
+        //     'resource' => 'LoginHome_Index'
+        // );
         return $nav;
     }
 
     public function hookPublicHeader($args){
-        echo common('login',array(),'widget');
+        // echo common('login',array(),'widget');
+    }
+
+     /**
+     * Add the pages to the public main navigation options.
+     * 
+     * @param array Navigation array.
+     * @return array Filtered navigation array.
+     */
+    public function filterPublicNavigationMain($nav)
+    {
+        if(!current_user()){
+        $navLinks[] = array(
+            'label' => 'Login',
+            'uri' => absolute_url('admin')
+        );
+        }else{
+            $navLinks = array();
+        }
+        $nav = array_merge($nav, $navLinks);
+        return $nav;
     }
 
 }
